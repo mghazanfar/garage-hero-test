@@ -1,6 +1,25 @@
+"use client";
+
 import { Button, Card, Checkbox, Label, TextInput } from "flowbite-react";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export function LoginForm() {
+  const { login } = useAuth();
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Here you would typically validate credentials with your backend
+    // For demo purposes, we'll just log in with any input
+    document.cookie = "isAuthenticated=true; path=/";
+    login();
+    router.push("/dashboard");
+  };
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
@@ -10,7 +29,7 @@ export function LoginForm() {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
               Sign in to your account
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div>
                 <Label htmlFor="email" className="mb-2 block dark:text-white">
                   Your email
@@ -20,14 +39,13 @@ export function LoginForm() {
                   placeholder="name@company.com"
                   required
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="bg-ghred-50 text-ghred-900 placeholder:text-ghred-700 focus:border-ghred-500 focus:ring-ghred-500 dark:border-ghred-400 dark:bg-ghred-100 dark:focus:border-ghred-500 dark:focus:ring-ghred-500 border-cyan-500"
                 />
               </div>
               <div>
-                <Label
-                  htmlFor="password"
-                  className="mb-2 block dark:text-white"
-                >
+                <Label htmlFor="password" className="mb-2 block dark:text-white">
                   Password
                 </Label>
                 <TextInput
@@ -35,6 +53,8 @@ export function LoginForm() {
                   placeholder="••••••••"
                   required
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="bg-ghred-50 text-ghred-900 placeholder:text-ghred-700 focus:border-ghred-500 focus:ring-ghred-500 dark:border-ghred-400 dark:bg-ghred-100 dark:focus:border-ghred-500 dark:focus:ring-ghred-500 border-cyan-500"
                 />
               </div>
@@ -44,33 +64,21 @@ export function LoginForm() {
                     <Checkbox id="remember" required />
                   </div>
                   <div className="ml-3 text-sm">
-                    <Label
-                      htmlFor="remember"
-                      className="text-gray-500 dark:text-gray-300"
-                    >
+                    <Label htmlFor="remember" className="text-gray-500 dark:text-gray-300">
                       Remember me
                     </Label>
                   </div>
                 </div>
-                <a
-                  href="#"
-                  className="text-primary-600 dark:text-primary-500 text-sm font-medium hover:underline"
-                >
+                <a href="#" className="text-primary-600 dark:text-primary-500 text-sm font-medium hover:underline">
                   Forgot password?
                 </a>
               </div>
-              <Button
-                type="submit"
-                className="bg-ghred-500 hover:bg-ghred-600 w-full"
-              >
+              <Button type="submit" className="bg-ghred-500 hover:bg-ghred-600 w-full">
                 Sign in
               </Button>
               <p className="text-sm font-medium text-gray-900 dark:text-white">
-                Don’t have an account yet?&nbsp;
-                <a
-                  href="#"
-                  className="text-primary-600 dark:text-primary-500 font-medium hover:underline"
-                >
+                Don't have an account yet?&nbsp;
+                <a href="#" className="text-primary-600 dark:text-primary-500 font-medium hover:underline">
                   Sign up
                 </a>
               </p>
