@@ -1,23 +1,39 @@
 "use client";
 
-import { Button, Card, Checkbox, Label, TextInput } from "flowbite-react";
+import { Button, Card, Checkbox, Label, TextInput, Alert } from "flowbite-react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useLogin } from "@/hooks/useLogin";
 
 export function LoginForm() {
-  const { login } = useAuth();
+  const { login: authLogin } = useAuth();
+  const { login, isLoading, error } = useLogin();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically validate credentials with your backend
-    // For demo purposes, we'll just log in with any input
-    document.cookie = "isAuthenticated=true; path=/";
-    login();
-    router.push("/dashboard");
+    
+    try {
+      const response = await login(email, password);
+      
+      if (response.success && response.data) {
+        // Store the token in a secure way (e.g., httpOnly cookie)
+        document.cookie = `auth_token=${response.data.token}; path=/; secure; samesite=strict`;
+        document.cookie = "isAuthenticated=true; path=/";
+        
+        // Update auth context
+        authLogin();
+        
+        // Redirect to dashboard
+        router.push("/dashboard");
+      }
+    } catch (err) {
+      // Error is already handled by the hook
+      console.error("Login failed:", err);
+    }
   };
 
   return (
@@ -29,6 +45,11 @@ export function LoginForm() {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
               Sign in to your account
             </h1>
+            {error && (
+              <Alert color="failure" className="mb-4">
+                {error.message}
+              </Alert>
+            )}
             <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div>
                 <Label htmlFor="email" className="mb-2 block dark:text-white">
@@ -73,8 +94,12 @@ export function LoginForm() {
                   Forgot password?
                 </a>
               </div>
-              <Button type="submit" className="bg-ghred-500 hover:bg-ghred-600 w-full">
-                Sign in
+              <Button 
+                type="submit" 
+                className="bg-ghred-500 hover:bg-ghred-600 w-full"
+                disabled={isLoading}
+              >
+                {isLoading ? "Signing in..." : "Sign in"}
               </Button>
               <p className="text-sm font-medium text-gray-900 dark:text-white">
                 Don't have an account yet?&nbsp;

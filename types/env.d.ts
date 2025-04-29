@@ -1,0 +1,9 @@
+declare namespace NodeJS {
+  interface ProcessEnv {
+    NEXT_PUBLIC_BACKEND_URL: string;
+    NEXT_PUBLIC_BACKEND_DOCUMENTATION: string;
+    NEXT_PUBLIC_DOCUMENTATION_DEV_USERNAME: string;
+    NEXT_PUBLIC_DOCUMENTATION_DEV_PASSWORD: string;
+    NEXT_PUBLIC_BACKEND_API_V1_KEY: string;
+  }
+} 
