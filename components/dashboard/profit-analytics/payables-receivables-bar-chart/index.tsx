@@ -2,13 +2,17 @@
 
 import { useEffect, useRef } from "react"
 import Chart from "chart.js/auto"
+import { useMonthlyTarget } from "@/hooks/useMonthlyTarget"
+import { Loader2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 export function PayablesReceivablesChart() {
     const chartRef = useRef<HTMLCanvasElement>(null)
     const chartInstance = useRef<Chart | null>(null)
+    const { data, isLoading, error, refetch } = useMonthlyTarget()
 
     useEffect(() => {
-        if (!chartRef.current) return
+        if (!chartRef.current || !data) return
 
         // Destroy existing chart if it exists
         if (chartInstance.current) {
@@ -25,7 +29,7 @@ export function PayablesReceivablesChart() {
                 labels: ["Receivables", "Payables"],
                 datasets: [
                     {
-                        data: [105, 80],
+                        data: [data.profit, data.loss],
                         backgroundColor: ["#2fb578", "#e62a49"],
                         borderColor: ["#2fb578", "#e62a49"],
                         borderWidth: 1,
@@ -43,16 +47,16 @@ export function PayablesReceivablesChart() {
                     },
                     tooltip: {
                         callbacks: {
-                            label: (context) => `${context.parsed.y}`,
+                            label: (context) => `$${context.parsed.y}`,
                         },
                     },
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 130,
+                        max: Math.max(data.profit, data.loss) * 1.2, // Add 20% padding
                         ticks: {
-                            stepSize: 20,
+                            stepSize: Math.ceil(Math.max(data.profit, data.loss) / 5), // 5 steps
                             color: "#4f4f4f",
                             font: {
                                 family: "'Inter', sans-serif",
@@ -91,7 +95,38 @@ export function PayablesReceivablesChart() {
                 chartInstance.current.destroy()
             }
         }
-    }, [])
+    }, [data])
+
+    if (isLoading) {
+        return (
+            <div className="w-full bg-white rounded-xl shadow-xl p-6">
+                <h2 className="text-2xl font-medium text-gray-600 uppercase">Profit and Loss</h2>
+                <p className="text-gray-400 mb-6">for this month</p>
+                <div className="h-[300px] flex items-center justify-center">
+                    <Loader2 className="h-8 w-8 animate-spin text-[#1c64f2]" />
+                </div>
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div className="w-full bg-white rounded-xl shadow-xl p-6">
+                <h2 className="text-2xl font-medium text-gray-600 uppercase">Profit and Loss</h2>
+                <p className="text-gray-400 mb-6">for this month</p>
+                <div className="h-[300px] flex flex-col items-center justify-center gap-4">
+                    <p className="text-[#6b7280]">We faced some error while fetching the data. Please wait for some time and try again.</p>
+                    <Button onClick={refetch} variant="primary">
+                        Retry
+                    </Button>
+                </div>
+            </div>
+        )
+    }
+
+    if (!data) {
+        return null
+    }
 
     return (
         <div className="w-full bg-white rounded-xl shadow-xl p-6">

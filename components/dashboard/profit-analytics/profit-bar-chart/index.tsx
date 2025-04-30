@@ -10,7 +10,7 @@ export default function ProfitChart() {
 
     if (isLoading) {
         return (
-            <div className="flex gap-2">
+            <div className="flex gap-2 h-full">
                 <div className="p-6 flex-1 bg-white shadow-md rounded-md">
                     <div className="flex items-center justify-center h-96">
                         <Loader2 className="h-8 w-8 animate-spin text-[#1c64f2]" />
@@ -22,7 +22,7 @@ export default function ProfitChart() {
 
     if (error) {
         return (
-            <div className="flex gap-2">
+            <div className="flex gap-2 h-full">
                 <div className="p-6 flex-1 bg-white shadow-md rounded-md">
                     <div className="flex flex-col items-center justify-center h-96 gap-4">
                         <p className="text-[#6b7280]">We faced some error while fetching the data. Please wait for some time and try again.</p>
@@ -40,7 +40,7 @@ export default function ProfitChart() {
     }
 
     return (
-        <div className="flex gap-2">
+        <div className="flex gap-2 h-full">
             {/* Month labels outside the card */}
             <div className="flex flex-col gap-14 justify-start pt-3">
                 {data.monthly_data.map((item, index) => (
