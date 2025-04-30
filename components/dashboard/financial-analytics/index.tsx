@@ -8,6 +8,7 @@ import { DateRangePicker } from "./date-range"
 import { Button } from "@/components/ui/button"
 import { useDashboardData } from "@/hooks/useDashboardData"
 import { Loader2 } from "lucide-react"
+import { Card } from "flowbite-react"
 
 // Dummy data sets for different date ranges
 const dataSets = {
@@ -68,9 +69,9 @@ export function FinancialAnalytics() {
             { title: "Stock value", value: `$${dashboardData.financials.stock_value.toLocaleString()}`, change: dashboardData.change.stock_value, isPositive: dashboardData.change.stock_value > 0, data: [0, 0, 0, 0, 0, 0, 0] },
         ],
         capacityData: [
-            { name: "Sales", percentage: Math.round((dashboardData.financials.revenue / (dashboardData.financials.revenue + dashboardData.financials.expenses)) * 100), value: `$${dashboardData.financials.revenue.toLocaleString()}`, color: "#1c64f2", icon: "/cart.svg" },
-            { name: "Expenses", percentage: Math.round((dashboardData.financials.expenses / (dashboardData.financials.revenue + dashboardData.financials.expenses)) * 100), value: `$${dashboardData.financials.expenses.toLocaleString()}`, color: "#f05252", icon: "/expense.svg" },
-            { name: "Stock Value", percentage: Math.round((dashboardData.financials.stock_value / (dashboardData.financials.revenue + dashboardData.financials.expenses)) * 100), value: `$${dashboardData.financials.stock_value.toLocaleString()}`, color: "#0e9f6e", icon: "/tag.svg" },
+            { name: "Profit", percentage: dashboardData.financials.profit_distribution.profit, value: `$${dashboardData.financials.revenue.toLocaleString()}`, color: "#1c64f2", icon: "/cart.svg" },
+            { name: "Expenses", percentage: dashboardData.financials.profit_distribution.expenses, value: `$${dashboardData.financials.expenses.toLocaleString()}`, color: "#f05252", icon: "/expense.svg" },
+            { name: "Assets", percentage: dashboardData.financials.profit_distribution.assets, value: `$${dashboardData.financials.stock_value.toLocaleString()}`, color: "#0e9f6e", icon: "/tag.svg" },
         ],
     } : {
         stockData: [
@@ -86,20 +87,12 @@ export function FinancialAnalytics() {
             { title: "Stock value", value: "$0", change: 0, isPositive: true, data: [0, 0, 0, 0, 0, 0, 0] },
         ],
         capacityData: [
-            { name: "Sales", percentage: 0, value: "$0", color: "#1c64f2", icon: "/cart.svg" },
+            { name: "Profit", percentage: 0, value: "$0", color: "#1c64f2", icon: "/cart.svg" },
             { name: "Expenses", percentage: 0, value: "$0", color: "#f05252", icon: "/expense.svg" },
-            { name: "Stock Value", percentage: 0, value: "$0", color: "#0e9f6e", icon: "/tag.svg" },
+            { name: "Assets", percentage: 0, value: "$0", color: "#0e9f6e", icon: "/tag.svg" },
         ],
     };
 
-    const handleDateRangeChange = (startDate: Date, endDate: Date) => {
-        // For demo purposes, just toggle between two data sets
-        if (currentData === dataSets.default) {
-            setCurrentData(dataSets.alternate)
-        } else {
-            setCurrentData(dataSets.default)
-        }
-    }
     if (isLoadingDashboardData) {
         return (
             <div className="w-full shadow-md bg-white p-6 rounded-md">
@@ -123,7 +116,6 @@ export function FinancialAnalytics() {
         );
     }
 
-
     return (
         <div className="w-full shadow-md bg-white p-6 rounded-md">
             <div className="space-y-6">
@@ -139,9 +131,12 @@ export function FinancialAnalytics() {
                         />
                     ))}
 
-
                     {/* Date selector */}
-                    <DateRangePicker onDateRangeChange={handleDateRangeChange} />
+                    <DateRangePicker
+                        startDate={dashboardData?.period?.start ? new Date(dashboardData.period.start) : undefined}
+                        endDate={dashboardData?.period?.end ? new Date(dashboardData.period.end) : undefined}
+                        readOnly={true}
+                    />
                 </div>
 
                 {/* Charts section */}
