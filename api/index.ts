@@ -32,6 +32,10 @@ export const authApi = {
 
 export const dashboardApi = {
   getAccountantDashboard: () => api.get("/api/v1/dashboard/accountant"),
+  getFinancialSummary: () =>
+    api.get(
+      "/api/v1/dashboard/accountant/financial-summary?period=last%206%20months",
+    ),
 };
 
 export { api };

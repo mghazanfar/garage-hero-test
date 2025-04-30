@@ -8,6 +8,7 @@ export function useDashboardData() {
 
   const fetchDashboardData = () => {
     setIsLoading(true);
+    setError(null);
     dashboardApi
       ?.getAccountantDashboard()
       .then((res) => setDashboardData(res?.data))
