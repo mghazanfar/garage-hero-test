@@ -19,7 +19,7 @@ export function SearchInput({
     onSubmit,
 }: SearchInputProps) {
     return (
-        <div className="relative w-full  max-w-[402px]">
+        <div className="relative w-full max-w-[402px]">
             <div className="flex items-center border border-[#e5e7eb] rounded-lg overflow-hidden">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <Search className="h-4 w-4 text-[#6b7280]" />
