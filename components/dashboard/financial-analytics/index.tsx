@@ -23,9 +23,9 @@ const dataSets = {
             { title: "Stock value", value: "$163.4k", change: 2.34, isPositive: true, data: [25, 35, 45, 55, 45, 65, 55] },
         ],
         capacityData: [
-            { name: "Profit", percentage: 76, value: "$163.4k", color: "#1c64f2" },
-            { name: "Expenses", percentage: 20, value: "$163.4k", color: "#16bdca" },
-            { name: "Assets", percentage: 4, value: "$16.4k", color: "#f05252" },
+            { name: "Profit", percentage: 76, value: "$163.4k", color: "#1c64f2", icon: "/cart.svg" },
+            { name: "Expenses", percentage: 20, value: "$163.4k", color: "#16bdca", icon: "/expense.svg" },
+            { name: "Assets", percentage: 4, value: "$16.4k", color: "#f05252", icon: "/tag.svg" },
         ],
     },
     alternate: {

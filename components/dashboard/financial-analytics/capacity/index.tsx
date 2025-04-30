@@ -1,8 +1,11 @@
+import Image from "next/image"
+
 interface CapacityItem {
     name: string
     percentage: number
     value: string
     color: string
+    icon: string
 }
 
 interface CapacityComponentProps {
@@ -17,7 +20,7 @@ export function CapacityComponent({ items }: CapacityComponentProps) {
                     <div key={index}>
                         <div className="flex items-center gap-1">
                             <span className="w-4 h-4 flex items-center justify-center">
-                                <span className="block w-2 h-2 rounded-full" style={{ backgroundColor: item.color }}></span>
+                                <Image src={item.icon} alt={item.name} width={16} height={16} />
                             </span>
                             <span className="text-[#6b7280] text-sm">{item.name}</span>
                         </div>

@@ -32,7 +32,7 @@ export function DateRangePicker({ onDateRangeChange }: DateRangePickerProps) {
         <div className="flex justify-end">
             <Popover open={isOpen} onOpenChange={setIsOpen}>
                 <PopoverTrigger asChild>
-                    <Button variant="outline" className="flex items-center gap-2 border-[#e5e7eb] text-[#111928]">
+                    <Button variant="outline" className="flex items-center gap-2 border-[#e5e7eb] text-[#111928] text-xs px-2">
                         <Calendar className="h-4 w-4" />
                         <span>
                             {date?.from ? format(date.from, "MMM dd") : "Start"} - {date?.to ? format(date.to, "MMM dd") : "End"}
