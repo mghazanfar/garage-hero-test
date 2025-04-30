@@ -17,9 +17,9 @@ export const DashboardAnalytics = () => {
             cell: (row) => <span className="font-medium">{row.id}</span>,
         },
         {
-            key: "customerName",
+            key: "customer_name",
             header: "CUSTOMER NAME",
-            cell: (row) => <span>{row.customerName}</span>,
+            cell: (row) => <span>{row.customer_name}</span>,
         },
         {
             key: "description",
@@ -31,14 +31,14 @@ export const DashboardAnalytics = () => {
             header: "TYPE",
             cell: (row) => {
                 const typeColorMap: Record<string, string> = {
-                    yellow: "bg-[#fdf6b2] text-[#723b13]",
-                    blue: "bg-[#e1effe] text-[#1e429f]",
-                    indigo: "bg-[#edebfe] text-[#42389d]",
-                    gray: "bg-[#f3f4f6] text-[#374151]",
-                    teal: "bg-[#d5f5f6] text-[#0694a2]",
+                    "Insurance": "bg-[#fdf6b2] text-[#723b13]",
+                    "Business": "bg-[#e1effe] text-[#1e429f]",
+                    "Agent": "bg-[#edebfe] text-[#42389d]",
+                    "Individual": "bg-[#f3f4f6] text-[#374151]",
+                    "Supplier": "bg-[#d5f5f6] text-[#0694a2]",
                 }
 
-                return <span className={`px-2 py-1 text-xs rounded-md ${typeColorMap[row.type.color]}`}>{row.type.value}</span>
+                return <span className={`px-2 py-1 text-xs rounded-md ${typeColorMap[row.type] || "bg-gray-100 text-gray-800"}`}>{row.type}</span>
             },
         },
         {
@@ -49,12 +49,30 @@ export const DashboardAnalytics = () => {
         {
             key: "amount",
             header: "AMOUNT",
-            cell: (row) => <span>{row.amount}</span>,
+            cell: (row) => <span>${row.amount.toFixed(2)}</span>,
         },
         {
-            key: "arAp",
+            key: "ar_ap",
             header: "AR/AP",
-            cell: (row) => <span>{row.arAp}</span>,
+            cell: (row) => <span>{row.ar_ap}</span>,
+        },
+        {
+            key: "status",
+            header: "STATUS",
+            cell: (row) => {
+                const statusColorMap: Record<string, string> = {
+                    "Completed": "bg-[#def7ec] text-[#03543f]",
+                    "In progress": "bg-[#edebfe] text-[#5521b5]",
+                    "Cancelled": "bg-[#fde8e8] text-[#9b1c1c]",
+                }
+
+                return <span className={`px-2 py-1 text-xs rounded-md ${statusColorMap[row.status] || "bg-gray-100 text-gray-800"}`}>{row.status}</span>
+            },
+        },
+        {
+            key: "payment_due_date",
+            header: "PAYMENT DUE DATE",
+            cell: (row) => <span>{row.payment_due_date}</span>,
         },
     ];
 
