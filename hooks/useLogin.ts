@@ -1,16 +1,34 @@
 import { useState } from "react";
 import axios from "axios";
 
+
+export interface VerifyOtpResponse {
+    success: boolean;
+    message?: string;
+    data?: {
+      token: string;
+      user: {
+        id: string;
+        email: string;
+      };
+    };
+  }
+  
+  export interface VerifyOtpError {
+    message: string;
+    status?: number;
+  }
+
 interface LoginResponse {
   success: boolean;
   message?: string;
   data?: {
-    token: string;
-    user: {
+    token?: string;
+    user?: {
       id: string;
       email: string;
-      name: string;
     };
+    requires_otp?: boolean;
   };
 }
 
@@ -40,7 +58,7 @@ export function useLogin() {
       const { data } = await api.post<LoginResponse>("/api/v1/user/login", {
         email,
         password,
-        user_type:"root"
+        user_type: "root"
       });
 
       if (!data.success) {
@@ -60,5 +78,33 @@ export function useLogin() {
     }
   };
 
-  return { login, isLoading, error };
+  const verifyOtp = async (email: string, otp: string) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const { data } = await api.post<VerifyOtpResponse>("/api/v1/user/verify-otp", {
+        email,
+        otp,
+        user_type: "root"
+      });
+debugger
+      if (!data.success) {
+        throw {
+          message: data.message || "OTP verification failed",
+          status: 400,
+        };
+      }
+
+      return data;
+    } catch (err) {
+      const error = err as any;
+      setError(error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { login, isLoading, error, verifyOtp };
 } 

@@ -3,6 +3,7 @@
 import { Button, Alert } from "flowbite-react";
 import { useSignup } from "@/hooks/useSignup";
 import { useState } from "react";
+import Link from "next/link";
 
 export function TestSignup() {
   const { signup, isLoading, error } = useSignup();
@@ -13,13 +14,13 @@ export function TestSignup() {
       const response = await signup({
         first_name: "Test",
         last_name: "User",
-        email: "depok34976@npo2.com",
+        email: "mhmmdghznfrali@gmail.com",
         country: "AE",
         lang: JSON.stringify({ acceptedLang: "en", browserLang: "en-US" }),
         phone_country_code: "971",
         phone_number: "0000000000",
         dob: "1993-03-03T20:00:00.000",
-        password: "TestUser2024!_!_",
+        password: "5Garage!!!!!",
         user_type: "root"
       });
 
@@ -30,20 +31,25 @@ export function TestSignup() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 flex flex-col gap-4 max-w-md mx-auto justify-center items-center">
+
+    {error && (
+      <Alert color="failure" className="mb-4">
+        {error.message}
+      </Alert>
+    )}
       <Button 
         onClick={handleSignup} 
         disabled={isLoading}
-        className="mb-4"
+        className="w-full"
       >
         {isLoading ? "Creating user..." : "Create Test User"}
       </Button>
-
-      {error && (
-        <Alert color="failure" className="mb-4">
-          {error.message}
-        </Alert>
-      )}
+      <Link href="/login">
+      <Button 
+        className="bg-red-700 w-full"
+      >Login
+      </Button></Link>
 
       {result && (
         <pre className="bg-gray-100 p-4 rounded-lg overflow-auto">

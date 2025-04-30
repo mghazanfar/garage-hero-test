@@ -5,9 +5,9 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useLogin } from "@/hooks/useLogin";
+import Link from "next/link";
 
 export function LoginForm() {
-  const { login: authLogin } = useAuth();
   const { login, isLoading, error } = useLogin();
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -18,21 +18,23 @@ export function LoginForm() {
     
     try {
       const response = await login(email, password);
-      
-      if (response.success && response.data) {
-        // Store the token in a secure way (e.g., httpOnly cookie)
-        document.cookie = `auth_token=${response.data.token}; path=/; secure; samesite=strict`;
-        document.cookie = "isAuthenticated=true; path=/";
+      if (response.success) {
+        // Store email in localStorage for OTP verification
+        localStorage.setItem("pendingVerificationEmail", email);
         
-        // Update auth context
-        authLogin();
-        
-        // Redirect to dashboard
-        router.push("/dashboard");
+        // Navigate to OTP page
+        router.push("/otp");
       }
     } catch (err) {
-      // Error is already handled by the hook
-      console.error("Login failed:", err);
+      debugger
+      if(err?.message === "An email with a verification code has been sent to your email address."){
+
+        // Store email in localStorage for OTP verification
+        localStorage.setItem("pendingVerificationEmail", email);
+        
+        // Navigate to OTP page
+        router.push("/otp");
+      } else console.error("Login failed:", err);
     }
   };
 
@@ -103,9 +105,9 @@ export function LoginForm() {
               </Button>
               <p className="text-sm font-medium text-gray-900 dark:text-white">
                 Don't have an account yet?&nbsp;
-                <a href="#" className="text-primary-600 dark:text-primary-500 font-medium hover:underline">
+                <Link href="/" className="text-primary-600 dark:text-primary-500 font-medium hover:underline">
                   Sign up
-                </a>
+                </Link>
               </p>
             </form>
           </Card>
