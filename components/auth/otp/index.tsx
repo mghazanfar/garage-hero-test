@@ -1,0 +1,1 @@
+export { OtpFormContainer as OtpComponent } from './otp-form.container'; 
