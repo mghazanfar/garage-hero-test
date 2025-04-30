@@ -6,7 +6,7 @@ import { CapacityComponent } from "./capacity"
 import { LineChartComponent } from "./line-chart"
 import { DateRangePicker } from "./date-range"
 import { Button } from "@/components/ui/button"
-import { useDashboardData } from "@/hooks/useDashboardData"
+import { useFinancialAnalyticsData } from "@/hooks/useFinancialAnalyticsData"
 import { Loader2 } from "lucide-react"
 import { Card } from "flowbite-react"
 
@@ -53,7 +53,7 @@ const dataSets = {
 }
 
 export function FinancialAnalytics() {
-    const { dashboardData, isLoadingDashboardData, dashboardDataError, refetchDashboardData } = useDashboardData();
+    const { dashboardData, isLoadingDashboardData, dashboardDataError, refetchDashboardData } = useFinancialAnalyticsData();
 
     const currentData = dashboardData ? {
         stockData: [
