@@ -6,6 +6,8 @@ import { CapacityComponent } from "./capacity"
 import { LineChartComponent } from "./line-chart"
 import { DateRangePicker } from "./date-range"
 import { Button } from "@/components/ui/button"
+import { useDashboardData } from "@/hooks/useDashboardData"
+import { Loader2 } from "lucide-react"
 
 // Dummy data sets for different date ranges
 const dataSets = {
@@ -42,15 +44,53 @@ const dataSets = {
             { title: "Stock value", value: "$185.7k", change: 3.5, isPositive: true, data: [35, 45, 55, 65, 55, 75, 65] },
         ],
         capacityData: [
-            { name: "Profit", percentage: 80, value: "$185.7k", color: "#1c64f2" },
-            { name: "Expenses", percentage: 15, value: "$152.1k", color: "#16bdca" },
-            { name: "Assets", percentage: 5, value: "$23.2k", color: "#f05252" },
+            { name: "Profit", percentage: 80, value: "$185.7k", color: "#1c64f2", icon: "/cart.svg" },
+            { name: "Expenses", percentage: 15, value: "$152.1k", color: "#16bdca", icon: "/expense.svg" },
+            { name: "Assets", percentage: 5, value: "$23.2k", color: "#f05252", icon: "/tag.svg" },
         ],
     },
 }
 
 export function FinancialAnalytics() {
-    const [currentData, setCurrentData] = useState(dataSets.default)
+    const { dashboardData, isLoadingDashboardData, dashboardDataError, refetchDashboardData } = useDashboardData();
+
+    const currentData = dashboardData ? {
+        stockData: [
+            { title: "Outstanding Invoices", value: dashboardData.stats.outstanding_invoices.toString(), change: dashboardData.change.outstanding_invoices, comparedTo: "vs last day" },
+            { title: "Average Collection Period", value: dashboardData.stats.average_collection_period, change: dashboardData.change.average_collection_period, comparedTo: "vs last month" },
+            { title: "Gross Profit Margin", value: dashboardData.stats.gross_profit_margin.toString(), change: dashboardData.change.gross_profit_margin, comparedTo: "vs last month" },
+            { title: "Inventory Turnover", value: dashboardData.stats.inventory_turnover, change: dashboardData.change.inventory_turnover, comparedTo: "vs last month" },
+            { title: "Online Payments", value: dashboardData.stats.online_payments.toString(), change: dashboardData.change.online_payments, comparedTo: "vs last month" },
+        ],
+        chartData: [
+            { title: "Revenue", value: `$${dashboardData.financials.revenue.toLocaleString()}`, change: dashboardData.change.revenue, isPositive: dashboardData.change.revenue > 0, data: [0, 0, 0, 0, 0, 0, 0] },
+            { title: "Expenses", value: `$${dashboardData.financials.expenses.toLocaleString()}`, change: dashboardData.change.expenses, isPositive: dashboardData.change.expenses > 0, data: [0, 0, 0, 0, 0, 0, 0] },
+            { title: "Stock value", value: `$${dashboardData.financials.stock_value.toLocaleString()}`, change: dashboardData.change.stock_value, isPositive: dashboardData.change.stock_value > 0, data: [0, 0, 0, 0, 0, 0, 0] },
+        ],
+        capacityData: [
+            { name: "Sales", percentage: Math.round((dashboardData.financials.revenue / (dashboardData.financials.revenue + dashboardData.financials.expenses)) * 100), value: `$${dashboardData.financials.revenue.toLocaleString()}`, color: "#1c64f2", icon: "/cart.svg" },
+            { name: "Expenses", percentage: Math.round((dashboardData.financials.expenses / (dashboardData.financials.revenue + dashboardData.financials.expenses)) * 100), value: `$${dashboardData.financials.expenses.toLocaleString()}`, color: "#f05252", icon: "/expense.svg" },
+            { name: "Stock Value", percentage: Math.round((dashboardData.financials.stock_value / (dashboardData.financials.revenue + dashboardData.financials.expenses)) * 100), value: `$${dashboardData.financials.stock_value.toLocaleString()}`, color: "#0e9f6e", icon: "/tag.svg" },
+        ],
+    } : {
+        stockData: [
+            { title: "Outstanding Invoices", value: "0", change: 0, comparedTo: "vs last day" },
+            { title: "Average Collection Period", value: "0", change: 0, comparedTo: "vs last month" },
+            { title: "Gross Profit Margin", value: "0", change: 0, comparedTo: "vs last month" },
+            { title: "Inventory Turnover", value: "0", change: 0, comparedTo: "vs last month" },
+            { title: "Online Payments", value: "0", change: 0, comparedTo: "vs last month" },
+        ],
+        chartData: [
+            { title: "Revenue", value: "$0", change: 0, isPositive: false, data: [0, 0, 0, 0, 0, 0, 0] },
+            { title: "Expenses", value: "$0", change: 0, isPositive: true, data: [0, 0, 0, 0, 0, 0, 0] },
+            { title: "Stock value", value: "$0", change: 0, isPositive: true, data: [0, 0, 0, 0, 0, 0, 0] },
+        ],
+        capacityData: [
+            { name: "Sales", percentage: 0, value: "$0", color: "#1c64f2", icon: "/cart.svg" },
+            { name: "Expenses", percentage: 0, value: "$0", color: "#f05252", icon: "/expense.svg" },
+            { name: "Stock Value", percentage: 0, value: "$0", color: "#0e9f6e", icon: "/tag.svg" },
+        ],
+    };
 
     const handleDateRangeChange = (startDate: Date, endDate: Date) => {
         // For demo purposes, just toggle between two data sets
@@ -60,6 +100,29 @@ export function FinancialAnalytics() {
             setCurrentData(dataSets.default)
         }
     }
+    if (isLoadingDashboardData) {
+        return (
+            <div className="w-full shadow-md bg-white p-6 rounded-md">
+                <div className="flex items-center justify-center h-96">
+                    <Loader2 className="h-8 w-8 animate-spin text-[#1c64f2]" />
+                </div>
+            </div>
+        );
+    }
+
+    if (dashboardDataError && !dashboardData) {
+        return (
+            <div className="w-full shadow-md bg-white p-6 rounded-md">
+                <div className="flex flex-col items-center justify-center h-96 gap-4">
+                    <p className="text-[#6b7280]">There was some error. Retry?</p>
+                    <Button onClick={refetchDashboardData} variant="primary">
+                        Retry
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+
 
     return (
         <div className="w-full shadow-md bg-white p-6 rounded-md">

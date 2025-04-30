@@ -1,4 +1,3 @@
-import { useDashboardData } from "@/hooks/useDashboardData";
 import { ProfitAnalysis } from "./profit-analytics";
 import { Table, ColumnDef } from "./table";
 import { FinancialAnalytics } from "./financial-analytics";
@@ -154,7 +153,6 @@ export const DashboardAnalytics = () => {
         return data
     }
 
-    const { dashboardData, isLoadingDashboardData, dashboardDataError } = useDashboardData();
 
     return (
         <div className="flex flex-col gap-4">

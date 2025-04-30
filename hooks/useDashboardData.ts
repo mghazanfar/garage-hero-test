@@ -18,10 +18,11 @@ export function useDashboardData() {
   useEffect(() => {
     fetchDashboardData();
   }, []);
-  debugger;
+
   return {
     dashboardData,
     isLoadingDashboardData: isLoading,
     dashboardDataError: error,
+    refetchDashboardData: fetchDashboardData,
   };
 }
