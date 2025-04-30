@@ -52,34 +52,43 @@ const dataSets = {
     },
 }
 
+const formatNumber = (value: number): string => {
+    if (value >= 1000000) {
+        return `$${(value / 1000000).toFixed(1)}M`
+    } else if (value >= 1000) {
+        return `$${(value / 1000).toFixed(1)}k`
+    }
+    return `$${value.toLocaleString()}`
+}
+
 export function FinancialAnalytics() {
     const { dashboardData, isLoadingDashboardData, dashboardDataError, refetchDashboardData } = useDashboardData();
 
     const currentData = dashboardData ? {
         stockData: [
-            { title: "Outstanding Invoices", value: dashboardData.stats.outstanding_invoices.toString(), change: dashboardData.change.outstanding_invoices, comparedTo: "vs last day" },
+            { title: "Outstanding Invoices", value: formatNumber(dashboardData.stats.outstanding_invoices), change: dashboardData.change.outstanding_invoices, comparedTo: "vs last day" },
             { title: "Average Collection Period", value: dashboardData.stats.average_collection_period, change: dashboardData.change.average_collection_period, comparedTo: "vs last month" },
-            { title: "Gross Profit Margin", value: dashboardData.stats.gross_profit_margin.toString(), change: dashboardData.change.gross_profit_margin, comparedTo: "vs last month" },
+            { title: "Gross Profit Margin", value: formatNumber(dashboardData.stats.gross_profit_margin), change: dashboardData.change.gross_profit_margin, comparedTo: "vs last month" },
             { title: "Inventory Turnover", value: dashboardData.stats.inventory_turnover, change: dashboardData.change.inventory_turnover, comparedTo: "vs last month" },
-            { title: "Online Payments", value: dashboardData.stats.online_payments.toString(), change: dashboardData.change.online_payments, comparedTo: "vs last month" },
+            { title: "Online Payments", value: `${dashboardData.stats.online_payments}%`, change: dashboardData.change.online_payments, comparedTo: "vs last month" },
         ],
         chartData: [
-            { title: "Revenue", value: `$${dashboardData.financials.revenue.toLocaleString()}`, change: dashboardData.change.revenue, isPositive: dashboardData.change.revenue > 0, data: [0, 0, 0, 0, 0, 0, 0] },
-            { title: "Expenses", value: `$${dashboardData.financials.expenses.toLocaleString()}`, change: dashboardData.change.expenses, isPositive: dashboardData.change.expenses > 0, data: [0, 0, 0, 0, 0, 0, 0] },
-            { title: "Stock value", value: `$${dashboardData.financials.stock_value.toLocaleString()}`, change: dashboardData.change.stock_value, isPositive: dashboardData.change.stock_value > 0, data: [0, 0, 0, 0, 0, 0, 0] },
+            { title: "Revenue", value: formatNumber(dashboardData.financials.revenue), change: dashboardData.change.revenue, isPositive: dashboardData.change.revenue > 0, data: [0, 0, 0, 0, 0, 0, 0] },
+            { title: "Expenses", value: formatNumber(dashboardData.financials.expenses), change: dashboardData.change.expenses, isPositive: dashboardData.change.expenses > 0, data: [0, 0, 0, 0, 0, 0, 0] },
+            { title: "Stock value", value: formatNumber(dashboardData.financials.stock_value), change: dashboardData.change.stock_value, isPositive: dashboardData.change.stock_value > 0, data: [0, 0, 0, 0, 0, 0, 0] },
         ],
         capacityData: [
-            { name: "Profit", percentage: dashboardData.financials.profit_distribution.profit, value: `$${dashboardData.financials.revenue.toLocaleString()}`, color: "#1c64f2", icon: "/cart.svg" },
-            { name: "Expenses", percentage: dashboardData.financials.profit_distribution.expenses, value: `$${dashboardData.financials.expenses.toLocaleString()}`, color: "#f05252", icon: "/expense.svg" },
-            { name: "Assets", percentage: dashboardData.financials.profit_distribution.assets, value: `$${dashboardData.financials.stock_value.toLocaleString()}`, color: "#0e9f6e", icon: "/tag.svg" },
+            { name: "Profit", percentage: dashboardData.financials.profit_distribution.profit, value: formatNumber(dashboardData.financials.revenue), color: "#1c64f2", icon: "/cart.svg" },
+            { name: "Expenses", percentage: dashboardData.financials.profit_distribution.expenses, value: formatNumber(dashboardData.financials.expenses), color: "#f05252", icon: "/expense.svg" },
+            { name: "Assets", percentage: dashboardData.financials.profit_distribution.assets, value: formatNumber(dashboardData.financials.stock_value), color: "#0e9f6e", icon: "/tag.svg" },
         ],
     } : {
         stockData: [
-            { title: "Outstanding Invoices", value: "0", change: 0, comparedTo: "vs last day" },
+            { title: "Outstanding Invoices", value: "$0", change: 0, comparedTo: "vs last day" },
             { title: "Average Collection Period", value: "0", change: 0, comparedTo: "vs last month" },
-            { title: "Gross Profit Margin", value: "0", change: 0, comparedTo: "vs last month" },
+            { title: "Gross Profit Margin", value: "$0", change: 0, comparedTo: "vs last month" },
             { title: "Inventory Turnover", value: "0", change: 0, comparedTo: "vs last month" },
-            { title: "Online Payments", value: "0", change: 0, comparedTo: "vs last month" },
+            { title: "Online Payments", value: "0%", change: 0, comparedTo: "vs last month" },
         ],
         chartData: [
             { title: "Revenue", value: "$0", change: 0, isPositive: false, data: [0, 0, 0, 0, 0, 0, 0] },
