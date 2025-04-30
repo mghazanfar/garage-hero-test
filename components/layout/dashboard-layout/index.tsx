@@ -14,7 +14,7 @@ export const DashboardLayout = ({
             <Topbar setCloseSidebar={() => setCloseSidebar(!closeSidebar)} />
             <div className="flex min-h-screen">
                 <Sidebar close={closeSidebar} />
-                <div className="p-4">
+                <div className="p-3 w-full">
                     {children}
                 </div>
             </div>
