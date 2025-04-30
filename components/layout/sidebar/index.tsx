@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { ChevronDown, HelpCircle, Home, FileText, LogOut, LogOutIcon } from "lucide-react"
+import { ChevronDown, HelpCircle, Home, FileText, LogOutIcon } from "lucide-react"
 import { useAuth } from "@/context/AuthContext"
 interface SidebarProps {
     close?: boolean
