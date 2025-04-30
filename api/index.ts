@@ -37,6 +37,10 @@ export const dashboardApi = {
       "/api/v1/dashboard/accountant/financial-summary?period=last%206%20months",
     ),
   getMonthlyTarget: () => api.get("/api/v1/dashboard/accountant/pl-graph"),
+  getInvoices: (page: number = 1, pageSize: number = 10) =>
+    api.get(
+      `/api/v1/dashboard/accountant/invoices?page=${page}&page_size=${pageSize}`,
+    ),
 };
 
 export { api };
