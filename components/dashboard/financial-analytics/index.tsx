@@ -6,7 +6,7 @@ import { CapacityComponent } from "./capacity"
 import { LineChartComponent } from "./line-chart"
 import { DateRangePicker } from "./date-range"
 import { Button } from "@/components/ui/button"
-import { useFinancialAnalyticsData } from "@/hooks/useFinancialAnalyticsData"
+import { useDashboardData } from "@/hooks/useDashboardData"
 import { Loader2 } from "lucide-react"
 import { Card } from "flowbite-react"
 
@@ -53,7 +53,7 @@ const dataSets = {
 }
 
 export function FinancialAnalytics() {
-    const { dashboardData, isLoadingDashboardData, dashboardDataError, refetchDashboardData } = useFinancialAnalyticsData();
+    const { dashboardData, isLoadingDashboardData, dashboardDataError, refetchDashboardData } = useDashboardData();
 
     const currentData = dashboardData ? {
         stockData: [
@@ -107,7 +107,7 @@ export function FinancialAnalytics() {
         return (
             <div className="w-full shadow-md bg-white p-6 rounded-md">
                 <div className="flex flex-col items-center justify-center h-96 gap-4">
-                    <p className="text-[#6b7280]">There was some error. Retry?</p>
+                    <p className="text-[#6b7280]">We faced some error while fetching the data. Please wait for some time and try again.</p>
                     <Button onClick={refetchDashboardData} variant="primary">
                         Retry
                     </Button>
