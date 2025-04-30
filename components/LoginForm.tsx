@@ -26,7 +26,6 @@ export function LoginForm() {
         router.push("/otp");
       }
     } catch (err) {
-      debugger
       if(err?.message === "An email with a verification code has been sent to your email address."){
 
         // Store email in localStorage for OTP verification

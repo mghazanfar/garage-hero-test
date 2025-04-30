@@ -45,17 +45,19 @@ export function EmailVerificationOTPForm() {
 
     try {
       const response = await verifyOtp(email, otpString);
-      debugger
-      if (response.success && response.data) {
-        // Store the token in a secure way
-        document.cookie = `auth_token=${response.data.token}; path=/; secure; samesite=strict`;
-        document.cookie = "isAuthenticated=true; path=/";
+      
+      if (response.access_token && response.user) {
+        // Update auth context with tokens and user data
+        authLogin(
+          {
+            accessToken: response.access_token,
+            refreshToken: response.refresh_token,
+          },
+          response.user
+        );
         
         // Clear pending verification
         localStorage.removeItem("pendingVerificationEmail");
-        
-        // Update auth context
-        authLogin();
         
         // Redirect to dashboard
         router.push("/dashboard");
