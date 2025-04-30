@@ -27,6 +27,7 @@ interface InvoiceTableProps {
     rowsPerPage?: number;
     totalCount?: number;
     label?: string;
+    refetch?: () => void;
 }
 
 export function Table({
@@ -35,6 +36,7 @@ export function Table({
     rowsPerPage = 5,
     totalCount = 1000,
     label,
+    refetch,
 }: InvoiceTableProps) {
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -102,6 +104,7 @@ export function Table({
                         variant="outline"
                         size="sm"
                         className="flex items-center gap-1"
+                        onClick={refetch}
                     >
                         <RefreshCw className="h-4 w-4" />
                         Refresh

@@ -112,6 +112,7 @@ export const DashboardAnalytics = () => {
                 data={data.data}
                 totalCount={data.total}
                 label="Invoices"
+                refetch={refetch}
             />
         </div>
     );
