@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, Bell, Moon, Settings, Percent } from "lucide-react";
-import { Avatar } from "flowbite-react";
+import { Menu } from "lucide-react";
 import { SearchInput } from "@/components/ui/search-input.component";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
@@ -12,11 +11,6 @@ export function Topbar({ setCloseSidebar }: { setCloseSidebar: () => void }) {
     const [searchQuery, setSearchQuery] = useState("");
     const { logout } = useAuth();
     const router = useRouter();
-
-    const handleLogout = () => {
-        logout();
-        router.push("/login");
-    };
 
     return (
         <header className="border-b border-[#e5e7eb] bg-white">
