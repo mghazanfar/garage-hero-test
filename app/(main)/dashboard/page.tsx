@@ -4,6 +4,7 @@ import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { useAuth } from "@/context/AuthContext";
 import { format } from "date-fns";
 import { FinancialAnalytics } from "@/components/dashboard/financial-analytics";
+import { ProfitAnalysis } from "@/components/dashboard/profit-analytics";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -19,6 +20,7 @@ export default function DashboardPage() {
         </div>
 
         <FinancialAnalytics />
+        <ProfitAnalysis />
       </div>
     </DashboardLayout>
   );

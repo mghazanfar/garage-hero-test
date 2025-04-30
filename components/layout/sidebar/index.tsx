@@ -23,7 +23,7 @@ export default function Sidebar({ close = false }: SidebarProps) {
             className={`bg-white border-r border-[#e5e7eb] transition-all duration-300 ease-in-out ${isClosed ? "w-[90px]" : "w-64"
                 }`}
         >
-            <div className="p-4 flex flex-col h-full">
+            <div className="p-4 flex flex-col h-[93vh]">
                 <div className="space-y-4 flex-1">
                     <div className="space-y-2">
                         <button
@@ -77,7 +77,7 @@ export default function Sidebar({ close = false }: SidebarProps) {
                     </nav>
                 </div>
 
-                <div className="relative group mb-20">
+                <div className="relative group">
                     <div
                         onClick={logout}
                         className={`flex items-center ${isClosed ? "justify-center" : ""

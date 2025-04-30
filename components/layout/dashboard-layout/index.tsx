@@ -12,9 +12,9 @@ export const DashboardLayout = ({
     return (
         <div className="bg-[#f8fafc]">
             <Topbar setCloseSidebar={() => setCloseSidebar(!closeSidebar)} />
-            <div className="flex min-h-screen">
+            <div className="flex min-h-screen max-h-[93vh] overflow-hidden">
                 <Sidebar close={closeSidebar} />
-                <div className="p-3 w-full">
+                <div className="p-3 w-full overflow-y-auto">
                     {children}
                 </div>
             </div>
