@@ -1,5 +1,5 @@
-import { EmailVerificationOTPForm } from "@/components/OtpForm";
+import { OtpComponent } from "@/components/auth/otp";
 
 export default function EmailVerificationPage() {
-  return <EmailVerificationOTPForm />;
+  return <OtpComponent />;
 }
