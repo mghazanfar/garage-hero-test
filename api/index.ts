@@ -41,6 +41,14 @@ export const dashboardApi = {
     api.get(
       `/api/v1/dashboard/accountant/invoices?page=${page}&page_size=${pageSize}`,
     ),
+  getReceipts: (page: number = 1, pageSize: number = 10) =>
+    api.get(
+      `/api/v1/dashboard/accountant/receipts?page=${page}&page_size=${pageSize}`,
+    ),
+  getInventory: (page: number = 1, pageSize: number = 10) =>
+    api.get(
+      `/api/v1/dashboard/accountant/inventory?page=${page}&page_size=${pageSize}`,
+    ),
 };
 
 export { api };
