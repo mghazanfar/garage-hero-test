@@ -1,42 +1,27 @@
 "use client";
 
 import { Button, Card, Checkbox, Label, TextInput, Alert } from "flowbite-react";
-import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useLogin } from "@/hooks/useLogin";
 import Link from "next/link";
 
-export function LoginForm() {
-  const { login, isLoading, error } = useLogin();
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+interface LoginFormComponentProps {
+  email: string;
+  password: string;
+  isLoading: boolean;
+  error: { message: string } | null;
+  onEmailChange: (value: string) => void;
+  onPasswordChange: (value: string) => void;
+  onSubmit: (e: React.FormEvent) => void;
+}
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      const response = await login(email, password);
-      if (response.success) {
-        // Store email in localStorage for OTP verification
-        localStorage.setItem("pendingVerificationEmail", email);
-        
-        // Navigate to OTP page
-        router.push("/otp");
-      }
-    } catch (err) {
-      if(err?.message === "An email with a verification code has been sent to your email address."){
-
-        // Store email in localStorage for OTP verification
-        localStorage.setItem("pendingVerificationEmail", email);
-        
-        // Navigate to OTP page
-        router.push("/otp");
-      } else console.error("Login failed:", err);
-    }
-  };
-
+export function LoginFormComponent({
+  email,
+  password,
+  isLoading,
+  error,
+  onEmailChange,
+  onPasswordChange,
+  onSubmit,
+}: LoginFormComponentProps) {
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
@@ -51,7 +36,7 @@ export function LoginForm() {
                 {error.message}
               </Alert>
             )}
-            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-4 md:space-y-6" onSubmit={onSubmit}>
               <div>
                 <Label htmlFor="email" className="mb-2 block dark:text-white">
                   Your email
@@ -62,7 +47,7 @@ export function LoginForm() {
                   required
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => onEmailChange(e.target.value)}
                   className="bg-ghred-50 text-ghred-900 placeholder:text-ghred-700 focus:border-ghred-500 focus:ring-ghred-500 dark:border-ghred-400 dark:bg-ghred-100 dark:focus:border-ghred-500 dark:focus:ring-ghred-500 border-cyan-500"
                 />
               </div>
@@ -76,7 +61,7 @@ export function LoginForm() {
                   required
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => onPasswordChange(e.target.value)}
                   className="bg-ghred-50 text-ghred-900 placeholder:text-ghred-700 focus:border-ghred-500 focus:ring-ghred-500 dark:border-ghred-400 dark:bg-ghred-100 dark:focus:border-ghred-500 dark:focus:ring-ghred-500 border-cyan-500"
                 />
               </div>
@@ -114,4 +99,4 @@ export function LoginForm() {
       </div>
     </section>
   );
-}
+} 
