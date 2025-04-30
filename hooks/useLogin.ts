@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { api, authApi } from "@/api";
 
 interface LoginResponse {
   success: boolean;
@@ -50,15 +51,6 @@ interface LoginError {
   status?: number;
 }
 
-// Create axios instance with base URL and default headers
-const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
-  headers: {
-    "Content-Type": "application/json",
-    "api_key": process.env.NEXT_PUBLIC_BACKEND_API_V1_KEY,
-  },
-});
-
 export function useLogin() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<LoginError | null>(null);
@@ -68,11 +60,7 @@ export function useLogin() {
     setError(null);
 
     try {
-      const { data } = await api.post<LoginResponse>("/api/v1/user/login", {
-        email,
-        password,
-        user_type: "root"
-      });
+      const { data } = await authApi?.login(email, password);
 
       if (!data.success) {
         throw {
@@ -96,11 +84,7 @@ export function useLogin() {
     setError(null);
 
     try {
-      const { data } = await api.post<VerifyOtpResponse>("/api/v1/user/verify-otp", {
-        email,
-        otp,
-        user_type: "root"
-      });
+      const { data } = await authApi?.verifyOtp(email, otp);
 
       return data;
     } catch (err) {
@@ -113,4 +97,4 @@ export function useLogin() {
   };
 
   return { login, verifyOtp, isLoading, error };
-} 
+}
