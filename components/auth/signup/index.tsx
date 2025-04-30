@@ -1,0 +1,1 @@
+export { TestSignupContainer as TestSignupComponent } from './test-signup.container'; 

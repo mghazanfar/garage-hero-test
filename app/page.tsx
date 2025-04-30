@@ -1,7 +1,7 @@
 "use client";
 
 import { DarkThemeToggle } from "flowbite-react";
-import { TestSignup } from "@/components/TestSignup";
+import { TestSignupComponent } from "@/components/auth/signup";
 
 export default function Home() {
   return (
@@ -10,7 +10,7 @@ export default function Home() {
         <h1 className="text-2xl dark:text-white">GARAGE-HERO Test</h1>
         <DarkThemeToggle />
       </div>
-      <TestSignup />
+      <TestSignupComponent />
     </main>
   );
 }
