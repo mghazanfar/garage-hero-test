@@ -148,3 +148,16 @@ You have **3 days** to complete the test.
 Sign-up is not required in this test. Use the **Sign-Up API** as described above to create test accounts.
 
 Good luck, and we look forward to reviewing your submission!
+
+---
+
+### Before integration
+
+I've seen that atleast 1-2 APIs usually return error or no data that makes my implementation looking not so good so I'm attaching video of how the dashboard looks like before integration. Also, API gave all data except for line chart data in first section and after API integration, line charts are not rendered due to no data. To see how app looked before API integration and error handling, see my commit **b92319b3e42c29714e1e13864103142a7e350d02** or attached video in below
+
+
+
+https://github.com/user-attachments/assets/d403639f-3d52-4753-8c60-e1dcd1734eda
+
+
+Good luck, and we look forward to reviewing your submission!
